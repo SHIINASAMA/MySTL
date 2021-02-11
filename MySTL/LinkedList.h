@@ -28,6 +28,7 @@ namespace mystd
 		~LinkedList()
 		{
 			clear();
+			delete root;
 		}
 
 		//在指定位置添加元素
