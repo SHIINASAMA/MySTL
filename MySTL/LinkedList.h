@@ -1,6 +1,6 @@
 #pragma once
 
-namespace mystd
+namespace mystl
 {
 	//链表节点
 	template<typename type>
@@ -15,9 +15,12 @@ namespace mystd
 	template<typename type>
 	class LinkedList
 	{
+	protected:
 		using Node = LinkedListNode<type>;
 
 		Node* root = new Node;
+		//只有add、remove和clear方法会影响到倒数第二个节点
+		Node* penultimate = nullptr;
 		int count = 0;
 
 	public:
@@ -36,27 +39,35 @@ namespace mystd
 		{
 			if (count >= index && index >= 0)
 			{
+				Node* penultimate = nullptr;
 				//要插入的节点
 				Node* tag = new Node;
 				tag->data = data;
 
-				//定位节点
-				Node* pos = root;
+				//将插入的点的前一个点
+				Node* prepos = root;
 				for (int i = 0; i < index; i++)
 				{
-					pos = pos->next;
+					prepos = prepos->next;
 				}
 
-				//判断插入位置尾部是否还有节点
-				if (nullptr != pos->next)
+				if (nullptr != prepos->next)
 				{
-					Node* tail = pos->next;
-					pos->next = tag;
+					Node* tail = prepos->next;
 					tag->next = tail;
+					prepos->next = tag;
+					penultimate = prepos;
 				}
 				else
 				{
-					pos->next = tag;
+					tag->next = prepos->next;
+					prepos->next = tag;
+					penultimate = tag;
+				}
+
+				if (count - 2 < index)
+				{
+					this->penultimate = penultimate;
 				}
 
 				count++;
@@ -77,8 +88,10 @@ namespace mystd
 
 				return pos->data;
 			}
-
-			return (type)(0);
+			else
+			{
+				return (type)(0);
+			}
 		}
 
 		//修改指定位置的元素
@@ -100,26 +113,45 @@ namespace mystd
 		//删除指定位置的元素
 		void remove(int index)
 		{
+			//确保删除区间正确
 			if (count > index && index >= 0)
 			{
-				//定位节点
-				Node* pos = root;
+				Node* penultimate = nullptr;
+				Node* preprepos = nullptr;
+				//将删除的点的前一个点
+				Node* prepos = root;
+				//将要删除的点
+				Node* tofree = nullptr;
 				for (int i = 0; i < index; i++)
 				{
-					pos = pos->next;
+					preprepos = prepos;
+					prepos = prepos->next;
 				}
 
-				//判断插入位置尾部是否还有节点
-				if (nullptr != pos->next->next)
+				tofree = prepos->next;
+				if (nullptr != tofree->next)
 				{
-					Node* tail = pos->next->next;
-					delete pos->next;
-					pos->next = tail;
+					Node* tail = tofree->next;
+					prepos->next = tail;
 				}
-				else
+				delete tofree;
+
+				if (count == 1)
 				{
-					delete pos->next;
-					pos->next = nullptr;
+					penultimate = nullptr;
+				}
+				else if (count - 1 > index)
+				{
+					penultimate = prepos;
+				}
+				else if (count - 1 == index)
+				{
+					penultimate = preprepos;
+				}
+
+				if (count - 2 < index)
+				{
+					this->penultimate = penultimate;
 				}
 
 				count--;
@@ -142,9 +174,9 @@ namespace mystd
 				}
 
 				root->next = nullptr;
+				penultimate = nullptr;
+				count = 0;
 			}
-
-			count = 0;
 		}
 	};
 };
