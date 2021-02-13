@@ -20,7 +20,7 @@ namespace mystl
 
 		Node* root = new Node;
 		//只有add、remove和clear方法会影响到倒数第二个节点
-		Node* penultimate = nullptr;
+		Node* penultimate = root;
 		int count = 0;
 
 	public:
@@ -85,11 +85,14 @@ namespace mystl
 		//在末尾添加元素
 		void addLast(type data)
 		{
-			Node* tag = new tag;
+			Node* tag = new Node;
 			tag->data = data;
-
-			penultimate = penultimate->next;
+			if (count != 0)
+			{
+				penultimate = penultimate->next;
+			}
 			penultimate->next = tag;
+			count++;
 		}
 
 		//返回指定位置的元素，
@@ -159,7 +162,7 @@ namespace mystl
 
 				if (count == 1)
 				{
-					penultimate = nullptr;
+					penultimate = root;
 				}
 				else if (count - 1 > index)
 				{
@@ -170,7 +173,7 @@ namespace mystl
 					penultimate = preprepos;
 				}
 
-				if (count - 2 < index)
+				if (count - 2 < index || count == 2)
 				{
 					this->penultimate = penultimate;
 				}

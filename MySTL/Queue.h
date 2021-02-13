@@ -11,21 +11,24 @@ namespace mystl
 		int limit = 0;
 
 	public:
-		//hasLimit用于设置队列元素是否有个数上限，默认为否
-		Queue(bool hasLimit = false)
+		//构造函数
+		Queue()
 		{
-			this->hasLimit = hasLimit;
 		}
 
 		//设置队列元素上限
-		//该函数在构造函数设置有上限时生效
+		//设置为0，则为无限制,
 		//设置成功返回true，
 		//设置失败返回false
 		bool setLimit(int limit)
 		{
-			if (limit <= 0 || count > limit)
+			if (limit < 0 || this->count > limit)
 			{
 				return false;
+			}
+			else if (0 == limit)
+			{
+				this->hasLimit = false;
 			}
 			this->limit = limit;
 			return true;
@@ -47,11 +50,11 @@ namespace mystl
 		//添加成功返回true，添加失败返回false
 		bool offer(type data)
 		{
-			if (!hasLimit)
+			if (hasLimit)
 			{
-				if (count < limit)
+				if (__super::count < limit)
 				{
-					addLast(data);
+					__super::addLast(data);
 					return true;
 				}
 			}
@@ -63,7 +66,7 @@ namespace mystl
 		//成功返回true
 		bool peek(type* data)
 		{
-			if (count == 0)
+			if (__super::count == 0)
 			{
 				return false;
 			}
@@ -73,14 +76,14 @@ namespace mystl
 		//获取并删除队列的第一个元素
 		//如果队列为空则返回false，
 		//成功返回true
-		bool take()
+		bool take(type* data)
 		{
-			if (count == 0)
+			if (__super::count == 0)
 			{
 				return false;
 			}
-			get(0, data);
-			remove(0);
+			__super::get(0, data);
+			__super::remove(0);
 			return true;
 		}
 
