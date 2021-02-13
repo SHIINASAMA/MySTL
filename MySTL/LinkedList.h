@@ -24,10 +24,12 @@ namespace mystl
 		int count = 0;
 
 	public:
+		//构造函数
 		LinkedList()
 		{
 		}
 
+		//析构函数 - 释放资源
 		~LinkedList()
 		{
 			clear();
@@ -74,8 +76,25 @@ namespace mystl
 			}
 		}
 
-		//返回指定位置的元素
-		type get(int index)
+		//在根节点添加元素
+		void addFirst(type data)
+		{
+			add(0, data);
+		}
+
+		//在末尾添加元素
+		void addLast(type data)
+		{
+			Node* tag = new tag;
+			tag->data = data;
+
+			penultimate = penultimate->next;
+			penultimate->next = tag;
+		}
+
+		//返回指定位置的元素，
+		//获取成功返回true，失败则返回false
+		bool get(int index, type* data)
 		{
 			if (count > index && index >= 0)
 			{
@@ -86,11 +105,12 @@ namespace mystl
 					pos = pos->next;
 				}
 
-				return pos->data;
+				*data = pos->data;
+				return true;
 			}
 			else
 			{
-				return (type)(0);
+				return false;
 			}
 		}
 
@@ -111,7 +131,8 @@ namespace mystl
 		}
 
 		//删除指定位置的元素
-		void remove(int index)
+		//获取成功返回true，失败则返回false
+		bool remove(int index)
 		{
 			//确保删除区间正确
 			if (count > index && index >= 0)
@@ -155,11 +176,16 @@ namespace mystl
 				}
 
 				count--;
+				return true;
+			}
+			else
+			{
+				return false;
 			}
 		}
 
 		//清空所有元素
-		void clear()
+		virtual void clear()
 		{
 			if (0 != count)
 			{
