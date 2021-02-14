@@ -8,7 +8,7 @@ namespace mystl
 	{
 	public:
 		type data;
-		LinkedListNode* next;
+		LinkedListNode* next = nullptr;
 	};
 
 	//存储和管理链表
@@ -30,7 +30,7 @@ namespace mystl
 		}
 
 		//析构函数 - 释放资源
-		~LinkedList()
+		virtual ~LinkedList()
 		{
 			clear();
 			delete root;
@@ -39,9 +39,8 @@ namespace mystl
 		//在指定位置添加元素
 		void add(int index, type data)
 		{
-			if (count >= index && index >= 0)
+			if (count >= index && index >= 0)//index 属于 [0,count]
 			{
-				Node* penultimate = nullptr;
 				//要插入的节点
 				Node* tag = new Node;
 				tag->data = data;
@@ -53,23 +52,20 @@ namespace mystl
 					prepos = prepos->next;
 				}
 
-				if (nullptr != prepos->next)
+				if (prepos->next != nullptr)
 				{
 					Node* tail = prepos->next;
 					tag->next = tail;
 					prepos->next = tag;
-					penultimate = prepos;
+					if (index == count - 1)
+					{
+						penultimate = prepos->next;
+					}
 				}
 				else
 				{
-					tag->next = prepos->next;
 					prepos->next = tag;
-					penultimate = tag;
-				}
-
-				if (count - 2 < index)
-				{
-					this->penultimate = penultimate;
+					penultimate = prepos;
 				}
 
 				count++;
@@ -140,8 +136,7 @@ namespace mystl
 			//确保删除区间正确
 			if (count > index && index >= 0)
 			{
-				Node* penultimate = nullptr;
-				Node* preprepos = nullptr;
+				Node* preprepos = root;
 				//将删除的点的前一个点
 				Node* prepos = root;
 				//将要删除的点
@@ -153,31 +148,22 @@ namespace mystl
 				}
 
 				tofree = prepos->next;
-				if (nullptr != tofree->next)
+				if (prepos->next->next != nullptr)
 				{
-					Node* tail = tofree->next;
+					Node* tail = prepos->next->next;
 					prepos->next = tail;
+					if (tail->next == nullptr)
+					{
+						penultimate = prepos;
+					}
 				}
-				delete tofree;
-
-				if (count == 1)
+				else
 				{
-					penultimate = root;
-				}
-				else if (count - 1 > index)
-				{
-					penultimate = prepos;
-				}
-				else if (count - 1 == index)
-				{
+					prepos->next = nullptr;
 					penultimate = preprepos;
 				}
 
-				if (count - 2 < index || count == 2)
-				{
-					this->penultimate = penultimate;
-				}
-
+				delete tofree;
 				count--;
 				return true;
 			}
@@ -188,7 +174,7 @@ namespace mystl
 		}
 
 		//清空所有元素
-		virtual void clear()
+		void clear()
 		{
 			if (0 != count)
 			{
@@ -203,9 +189,15 @@ namespace mystl
 				}
 
 				root->next = nullptr;
-				penultimate = nullptr;
+				penultimate = root;
 				count = 0;
 			}
+		}
+
+		//返回表内元素个数
+		int getCount()
+		{
+			return count;
 		}
 	};
 };

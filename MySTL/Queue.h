@@ -92,5 +92,11 @@ namespace mystl
 		{
 			LinkedList<type>::clear();
 		}
+
+		//返回队列内元素个数
+		int getCount()
+		{
+			return __super::count;
+		}
 	};
 }
