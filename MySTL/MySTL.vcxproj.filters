@@ -4,5 +4,6 @@
     <ClInclude Include="LinkedList.h" />
     <ClInclude Include="Queue.h" />
     <ClInclude Include="Stack.h" />
+    <ClInclude Include="Map.h" />
   </ItemGroup>
 </Project>

@@ -3,6 +3,7 @@
 
 namespace mystl
 {
+	//¶ÑÕ»
 	template<typename type>
 	class Stack : LinkedList<type>
 	{

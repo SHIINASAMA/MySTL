@@ -3,6 +3,7 @@
 
 namespace mystl
 {
+	//╤сап
 	template<typename type>
 	class Queue : LinkedList<type>
 	{
