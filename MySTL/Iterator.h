@@ -3,13 +3,12 @@
 
 namespace mystl
 {
-	//迭代器
-	//node	-> 迭代用节点
+	//前向迭代器
 	//value -> 节点上的数据
-	template<typename node, typename value>
+	template<typename value>
 	class Iterator
 	{
-		using Iterable = Iterable<node, value>;
+		using Iterable = Iterable<value>;
 
 		Iterable* impl;
 

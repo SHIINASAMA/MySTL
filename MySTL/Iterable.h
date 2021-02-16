@@ -2,10 +2,9 @@
 
 namespace mystl
 {
-	//可迭代接口
-	//node	-> 迭代用节点
+	//前向可迭代接口
 	//value -> 节点上的数据
-	template<typename node, typename value>
+	template<typename value>
 	class Iterable
 	{
 	public:

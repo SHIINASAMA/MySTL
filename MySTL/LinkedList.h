@@ -1,14 +1,27 @@
 #pragma once
+#include "Iterator.h"
 
 namespace mystl
 {
 	//链表节点
 	template<typename type>
-	class LinkedListNode
+	class LinkedListNode : public Iterable<type>
 	{
 	public:
 		type data;
 		LinkedListNode* next = nullptr;
+
+		//实现迭代器接口
+	public:
+		Iterable<type>* getNext()
+		{
+			return next;
+		}
+
+		type* getValue()
+		{
+			return &data;
+		}
 	};
 
 	//存储和管理链表
@@ -198,6 +211,12 @@ namespace mystl
 		int getCount()
 		{
 			return count;
+		}
+
+		//获取链表迭代器
+		Iterator<type>* getIterator()
+		{
+			return new Iterator(root);
 		}
 	};
 };
