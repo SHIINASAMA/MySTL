@@ -1,6 +1,7 @@
 #pragma once
 #include "LinkedList.h"
 #include <string.h>
+#include <stdio.h>
 
 namespace mystl
 {
@@ -72,11 +73,58 @@ namespace mystl
 		//内部链表指针
 		List** list = nullptr;
 
-		//TODO:待实现
-		//扩容函数
+		//扩容函数 - 由程序自动判断是否需要扩容，不需要人工判断
+		//扩容公式 f(size) = size * 2 + 1
 		void expand()
 		{
+			//临时存储数据
+			List* temp = new List;
+			int count = 0;
+			for (int i = 0; i < this->size; i++)
+			{
+				Iterator* itor = this->list[i]->getIterator();
+				Node* node;
+				while ((node = itor->next()) != nullptr)
+				{
+					temp->addFirst(*node);
+					count++;
+				}
+				if (count == this->count)
+				{
+					break;
+				}
+			}
+
+			//释放原有空间并重新分配空间
+			for (int i = 0; i < this->size; i++)
+			{
+				delete this->list[i];
+			}
+			delete[] this->list;
+
+			this->size = this->size * 2 + 1;
+			this->list = new  List * [this->size];
+			for (int i = 0; i < this->size; i++)
+			{
+				this->list[i] = new List();
+			}
+
+			//重新计算Hash值并放入新地址
+			Iterator* itor = temp->getIterator();
+			Node* node;
+			uint hashCode;
+			uint pos;
+			while ((node = itor->next()) != nullptr)
+			{
+				hashCode = Hash::getHashCode(node->key);
+				pos = hashCode % this->size;
+				this->list[pos]->addFirst(*node);
+			}
+
+			//释放临时表资源
+			delete temp;
 		}
+
 	public:
 		//默认构造函数
 		Map()
@@ -130,6 +178,10 @@ namespace mystl
 			if (this->list[pos]->getCount() == 0)
 			{
 				//无哈希冲突
+				if (this->count == (int)(this->size * loadFactor - 1))
+				{
+					expand();
+				}
 				this->list[pos]->addFirst(tag);
 				this->count++;
 				return true;
@@ -147,6 +199,11 @@ namespace mystl
 						node->value = v;
 						return false;
 					}
+				}
+
+				if (this->count == this->size * loadFactor - 1)
+				{
+					expand();
 				}
 				//不存在改键，新增
 				this->list[pos]->addFirst(tag);
