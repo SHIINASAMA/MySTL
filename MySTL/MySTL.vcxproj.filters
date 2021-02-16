@@ -5,5 +5,7 @@
     <ClInclude Include="Queue.h" />
     <ClInclude Include="Stack.h" />
     <ClInclude Include="Map.h" />
+    <ClInclude Include="Iterator.h" />
+    <ClInclude Include="Iterable.h" />
   </ItemGroup>
 </Project>

@@ -5,9 +5,7 @@ using namespace mystl;
 
 int main()
 {
-	char hello[] = "lllll";
-	char hello1[] = "lll1l";
-	auto a = Hash<char[]>::getHashCode(hello, sizeof(hello));
-	auto b = Hash<char[]>::getHashCode(hello1, sizeof(hello1));
+	LinkedList<int>* list = new LinkedList<int>;
+	list->addFirst(100);
 	return 0;
 }

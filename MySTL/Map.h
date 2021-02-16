@@ -33,7 +33,7 @@ namespace mystl
 				res += temp;
 			}
 
-			delete str;
+			delete[] str;
 			return res;
 		}
 		//计算哈希值
@@ -79,12 +79,23 @@ namespace mystl
 		//默认构造函数
 		Map()
 		{
+			this->list = new List[this->size];
 		}
 
 		//指定初始大小的构造函数
 		//大小最小可为11，若不满足该条件则强制执行
 		Map(int size)
 		{
+			if (size >= 11)
+			{
+				this->size = size;
+			}
+			else
+			{
+				this->size = 11;
+			}
+
+			this->list = new List[this->size];
 		}
 
 		//释放资源
@@ -97,6 +108,16 @@ namespace mystl
 		//否则正常添加返回true
 		bool put(key k, value v)
 		{
+			uint hashCode = Hash::getHashCode(k);
+			int pos = hashCode % this->size;
+			if (this->list[pos]->getCount() == 0)
+			{
+				//无哈希冲突
+			}
+			else
+			{
+				//存在哈希冲突
+			}
 		}
 
 		//根据键获取值
