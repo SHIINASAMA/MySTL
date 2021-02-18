@@ -7,5 +7,7 @@
     <ClInclude Include="Map.h" />
     <ClInclude Include="Iterator.h" />
     <ClInclude Include="Iterable.h" />
+    <ClInclude Include="Huffman.h" />
+    <ClInclude Include="Kits.h" />
   </ItemGroup>
 </Project>

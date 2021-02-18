@@ -1,17 +1,14 @@
-#include "../MySTL/Map.h"
+#include "../MySTL/Huffman.h"
 #include <stdio.h>
 
 using namespace mystl;
 
 int main()
 {
-	Map<int, int>* map = new Map<int, int>;
-	for (int i = 0; i < 100; i++)
-	{
-		map->put(i, 100 - i);
-	}
+	int nums1[] = { 99,29,38,56,33,12,7 };
+	int nums2[] = { 99,29,38,56,33,12,7 };
 
-	int a;
-	map->get(57, &a);
+	sort(nums1, 7, SortMode::ASC);
+	sort(nums2, 7, SortMode::DESC);
 	return 0;
 }

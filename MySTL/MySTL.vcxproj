@@ -149,10 +149,12 @@
   <ItemGroup>
     <ClInclude Include="Iterable.h" />
     <ClInclude Include="Iterator.h" />
+    <ClInclude Include="Kits.h" />
     <ClInclude Include="LinkedList.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Queue.h" />
     <ClInclude Include="Stack.h" />
+    <ClInclude Include="Huffman.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
