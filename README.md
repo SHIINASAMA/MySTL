@@ -54,6 +54,7 @@
 | **bool** offer(**type** data);    | 将一个元素放入队列末尾，该函数适用于队列长度有限制时。添加成功返回true，反之 |
 | **bool** peek(**type*** data);    | 获取队列第一个元素，如果队列为空则返回false                  |
 | **bool** take(**type*** data);    | 获取并删除队列第一个元素，如果队列为空则返回false            |
+| **bool** remove();                | 直接删除队列第一个元素，如果队列为空则返回false              |
 | **void** clear();                 | 清空队列                                                     |
 | **int** getCount();               | 获取队列内元素个数                                           |
 
@@ -66,6 +67,7 @@
 | Stack();                       | 初始化一个堆栈                             |
 | **bool** peek(**type*** data); | 获取堆栈顶部元素，成功返回true，反之       |
 | **bool** pop(**type*** data);  | 获取并删除堆栈顶部元素，成功返回true，反之 |
+| **bool** remove();             | 直接删除堆栈顶部元素，成功返回true，反之   |
 | **void** push(**type** data);  | 将元素压入堆栈                             |
 | **void** clear();              | 清除堆栈元素                               |
 | **int** getCount();            | 获取堆栈中元素个数                         |
@@ -112,6 +114,18 @@
 | ----------------------------- | ----------------------------------------------------------- |
 | Iterator(**Iterable*** impl); | 初始化迭代器                                                |
 | **value*** next()             | 迭代并返回下一个节点的数据，若不存在下一个节点则返回nullptr |
+
+-----
+
+#### *HuffmanTreeNode&lt;type&gt; - 哈夫曼树节点*
+
+-----
+
+#### *HuffmanTree&lt;type&gt; - 哈夫曼树*
+
+------
+
+#### *Huffman&lt;type&gt; - 哈夫曼编码*
 
 -----
 

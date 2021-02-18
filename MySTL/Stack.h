@@ -41,6 +41,19 @@ namespace mystl
 			__super::addFirst(data);
 		}
 
+		//直接删除堆栈顶部元素
+		//成功返回true
+		//失败返回false
+		bool remove()
+		{
+			if (__super::count == 0)
+			{
+				return false;
+			}
+			__super::remove(0);
+			return true;
+		}
+
 		//清除堆栈内元素
 		void clear()
 		{

@@ -71,7 +71,7 @@ namespace mystl
 		//当前键值对总数
 		int count = 0;
 		//内部链表指针
-		List** list = nullptr;
+		List* list = nullptr;
 
 		//扩容函数 - 由程序自动判断是否需要扩容，不需要人工判断
 		//扩容公式 f(size) = size * 2 + 1
@@ -96,18 +96,9 @@ namespace mystl
 			}
 
 			//释放原有空间并重新分配空间
-			for (int i = 0; i < this->size; i++)
-			{
-				delete this->list[i];
-			}
 			delete[] this->list;
-
 			this->size = this->size * 2 + 1;
-			this->list = new  List * [this->size];
-			for (int i = 0; i < this->size; i++)
-			{
-				this->list[i] = new List();
-			}
+			this->list = new List[this->size];
 
 			//重新计算Hash值并放入新地址
 			Iterator* itor = temp->getIterator();
@@ -129,11 +120,7 @@ namespace mystl
 		//默认构造函数
 		Map()
 		{
-			this->list = new List * [this->size];
-			for (int i = 0; i < this->size; i++)
-			{
-				this->list[i] = new List();
-			}
+			this->list = new List[this->size];
 		}
 
 		//指定初始大小的构造函数
@@ -149,21 +136,13 @@ namespace mystl
 				this->size = 11;
 			}
 
-			this->list = new List * [this->size];
-			for (int i = 0; i < this->size; i++)
-			{
-				this->list[i] = new List();
-			}
+			this->list = new List[this->size];
 		}
 
 		//释放资源
 		~Map()
 		{
 			this->clear();
-			for (int i = 0; i < this->size; i++)
-			{
-				delete this->list[i];
-			}
 			delete[] this->list;
 		}
 

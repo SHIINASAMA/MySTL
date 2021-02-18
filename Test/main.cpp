@@ -5,10 +5,23 @@ using namespace mystl;
 
 int main()
 {
-	int nums1[] = { 99,29,38,56,33,12,7 };
-	int nums2[] = { 99,29,38,56,33,12,7 };
+	HuffmanTreeNode<int> node[8];
+	node[0].weight = 19;
+	node[1].weight = 21;
+	node[2].weight = 2;
+	node[3].weight = 3;
+	node[4].weight = 6;
+	node[5].weight = 7;
+	node[6].weight = 10;
+	node[7].weight = 32;
+	HuffmanTree<int>* tree = new HuffmanTree<int>;
 
-	sort(nums1, 7, SortMode::ASC);
-	sort(nums2, 7, SortMode::DESC);
+	Stack<HuffmanTreeNode<int>>* stack = new Stack< HuffmanTreeNode<int>>;
+	for (int i = 0; i < 8; i++)
+	{
+		stack->push(node[i]);
+	}
+
+	tree->create(node, 8);
 	return 0;
 }

@@ -67,7 +67,7 @@ namespace mystl
 
 		int i = left;
 		int j = right;
-		type base = nums[left];
+		type base = nums[left];//»ù×¼Öµ
 		while (i != j)
 		{
 			while (nums[j] <= base && i < j)
