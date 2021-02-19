@@ -125,7 +125,14 @@
 | **bool** operator>=(const **HuffmanTreeNode&lt;type&gt;&** node); | 比较节点中权重大小，用于排序 |
 | **bool** operator<=(const **HuffmanTreeNode&lt;type&gt;&** node); | 比较节点中权重大小，用于排序 |
 
+-----
 
+#### Bin : Queue&lt;Code&gt; - 二进制队列
+
+| 原型                                | 注释         |
+| ----------------------------------- | ------------ |
+| Bin() : Queue&lt;Code&gt;::Queue(); | 初始化队列   |
+| **char*** toString();               | 转换为字符串 |
 
 -----
 
@@ -170,12 +177,21 @@
 
 #### 结构
 
-#### *enum class SortMode* - 排序模式
+#### *enum class SortMode* - 排序模式枚举
 
 | 值   | 注释     |
 | ---- | -------- |
 | ASC  | 正序排序 |
 | DESC | 反序排序 |
+
+-----
+
+#### enum class Code - 二进制位枚举
+
+| 值   | 注释 |
+| ---- | ---- |
+| Zero | 1    |
+| One  | 0    |
 
 
 

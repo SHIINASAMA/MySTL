@@ -43,7 +43,7 @@ namespace mystl
 			{
 				return;
 			}
-			addLast(data);
+			__super::addLast(data);
 		}
 
 		//将一个元素放入队列末尾，
@@ -114,7 +114,7 @@ namespace mystl
 		}
 
 		//返回实例副本
-		Queue<type>* clone()
+		void* clone()
 		{
 			Queue<type>* queue = (Queue<type>*) __super::clone();
 			queue->hasLimit = this->hasLimit;

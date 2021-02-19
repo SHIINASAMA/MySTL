@@ -1,7 +1,9 @@
 #pragma once
 #include "Stack.h"
 #include "Kits.h"
-#include <stdio.h>
+#include "Queue.h"
+#include "Map.h"
+#include <string.h>
 
 namespace mystl
 {
@@ -34,7 +36,7 @@ namespace mystl
 	protected:
 		using Node = HuffmanTreeNode<type>;
 		using Stack = Stack<Node>;
-		Node root;
+		Node* root;
 
 		//堆栈排序
 		void sort(Stack* stack)
@@ -104,12 +106,52 @@ namespace mystl
 		//释放资源
 		~HuffmanTree()
 		{
-			clear(&this->root);
+			clear(this->root);
 		}
 
-		void create(Stack* stack)
+		Node* create(Stack* stack)
 		{
 			root = create(stack);
+			return root;
+		}
+	};
+
+	//用于表示一串二进制
+	class Bin : public Queue<Code>
+	{
+	public:
+		//构造函数
+		Bin() : Queue<Code>::Queue()
+		{
+		}
+
+		//转换为字符串
+		char* toString()
+		{
+			int len = this->getCount();
+			if (len == 0)
+			{
+				return nullptr;
+			}
+			else
+			{
+				Code temp;
+				char* buffer = new char[len + (unsigned long long)1];
+				for (int i = 0; i < len; i++)
+				{
+					this->take(&temp);
+					if (temp == Code::One)
+					{
+						buffer[i] = '1';
+					}
+					else
+					{
+						buffer[i] = '0';
+					}
+				}
+				buffer[len] = '\0';
+				return buffer;
+			}
 		}
 	};
 
@@ -118,14 +160,57 @@ namespace mystl
 	class Huffman
 	{
 		using Node = HuffmanTreeNode<type>;
+		using Tree = HuffmanTree<type>;
+		using Queue = Queue<Node>;
 		using Stack = Stack<Node>;
-	public:
-		void Encoding()
-		{
-		}
+		using Map = Map<Node, Bin>;
 
-		void Decoding()
+		//遍历节点拿Code
+		void getCode(Node* node, Queue* queue, Map* map)
 		{
+			if (node->left != nullptr)
+			{
+				Queue* temp = (Queue*)queue->clone();
+				temp->put(Code::One);
+				getCode(node->left, temp, map);
+			}
+
+			if (node->right != nullptr)
+			{
+				Queue* temp = (Queue*)queue->clone();
+				temp->put(Code::Zero);
+				getCode(node->right, temp, map);
+			}
+
+			if (node->left == nullptr && node->left == nullptr)
+			{
+				Bin* bin = new Bin;
+				int len = queue->getCount();
+				Code code;
+				for (int i = 0; i < len; i++)
+				{
+					queue->take(&code);
+					bin->put(code);
+				}
+				map->put(node, bin);
+			}
+
+			delete queue;
+		}
+	public:
+		//根据所给频率表计算哈夫曼编码
+		Map* calculate(Stack* stack)
+		{
+			Tree* tree = new Tree;
+			Map* map = new Map;
+			Node* root = tree->create(stack);
+			Queue* queue = new Queue;
+
+			getCode(root, queue, map);
+
+			delete queue;
+			delete tree;
+			return map;
 		}
 	};
 };

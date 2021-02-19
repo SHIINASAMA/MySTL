@@ -109,4 +109,11 @@ namespace mystl
 		else
 			descSort<type>(objs, 0, count - 1);
 	}
+
+	//二进制枚举
+	enum class Code
+	{
+		Zero = '0',
+		One = '1'
+	};
 };

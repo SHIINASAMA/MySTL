@@ -67,9 +67,9 @@ namespace mystl
 		}
 
 		//返回实例副本
-		Stack<type>* clone()
+		void* clone()
 		{
-			return (Stack<type>*) __super::clone();
+			return __super::clone();
 		}
 	};
 };

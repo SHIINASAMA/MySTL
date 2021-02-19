@@ -9,7 +9,7 @@ namespace mystl
 	class LinkedListNode : public Iterable<type>
 	{
 	public:
-		type data;
+		type data{ 0 };
 		LinkedListNode* next = nullptr;
 
 		//实现迭代器接口

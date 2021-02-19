@@ -6,7 +6,7 @@ using namespace mystl;
 
 int main()
 {
-	/*HuffmanTreeNode<int> node[8];
+	HuffmanTreeNode<double> node[8];
 	node[0].weight = 19;
 	node[1].weight = 21;
 	node[2].weight = 2;
@@ -16,19 +16,18 @@ int main()
 	node[6].weight = 10;
 	node[7].weight = 32;
 
-	Stack<HuffmanTreeNode<int>>* stack = new Stack< HuffmanTreeNode<int>>;
+	Stack<HuffmanTreeNode<double>>* stack = new Stack< HuffmanTreeNode<double>>;
 	for (int i = 0; i < 8; i++)
 	{
 		stack->push(node[i]);
-	}*/
+	}
 
-	Map<int, int>* map1 = new Map<int, int>;
-	map1->put(1, 1);
-	Map<int, int>* map2 = (Map<int, int>*)map1->clone();
-	map2->put(2, 2);
+	Huffman<double>* huffman = new Huffman<double>;
+	Map<HuffmanTreeNode<double>, Bin>* map = huffman->calculate(stack);
 
-	int i = 0;
-	map1->get(2, &i);
+	/*Bin bin;
+	map->get(node[3], &bin);
+	printf("%s\n", bin.toString());*/
 
 	return 0;
 }
