@@ -9,5 +9,6 @@
     <ClInclude Include="Iterable.h" />
     <ClInclude Include="Huffman.h" />
     <ClInclude Include="Kits.h" />
+    <ClInclude Include="Cloneable.h" />
   </ItemGroup>
 </Project>

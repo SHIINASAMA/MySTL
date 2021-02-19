@@ -55,7 +55,7 @@ namespace mystl
 
 	//哈希表
 	template<typename key, typename value>
-	class Map
+	class Map : Cloneable
 	{
 	protected:
 		using Hash = Hash<key>;
@@ -82,7 +82,7 @@ namespace mystl
 			int count = 0;
 			for (int i = 0; i < this->size; i++)
 			{
-				Iterator* itor = this->list[i]->getIterator();
+				Iterator* itor = this->list[i].getIterator();
 				Node* node;
 				while ((node = itor->next()) != nullptr)
 				{
@@ -93,6 +93,7 @@ namespace mystl
 				{
 					break;
 				}
+				delete itor;
 			}
 
 			//释放原有空间并重新分配空间
@@ -109,10 +110,11 @@ namespace mystl
 			{
 				hashCode = Hash::getHashCode(node->key);
 				pos = hashCode % this->size;
-				this->list[pos]->addFirst(*node);
+				this->list[pos].addFirst(*node);
 			}
 
 			//释放临时表资源
+			delete itor;
 			delete temp;
 		}
 
@@ -154,21 +156,21 @@ namespace mystl
 			uint hashCode = Hash::getHashCode(k);
 			int pos = hashCode % this->size;
 			Node tag{ k,v };
-			if (this->list[pos]->getCount() == 0)
+			if (this->list[pos].getCount() == 0)
 			{
 				//无哈希冲突
 				if (this->count == (int)(this->size * loadFactor - 1))
 				{
 					expand();
 				}
-				this->list[pos]->addFirst(tag);
+				this->list[pos].addFirst(tag);
 				this->count++;
 				return true;
 			}
 			else
 			{
 				//存在哈希冲突
-				Iterator* itor = this->list[pos]->getIterator();
+				Iterator* itor = this->list[pos].getIterator();
 				Node* node;
 				while ((node = itor->next()) != nullptr)
 				{
@@ -179,13 +181,14 @@ namespace mystl
 						return false;
 					}
 				}
+				delete itor;
 
 				if (this->count == this->size * loadFactor - 1)
 				{
 					expand();
 				}
 				//不存在改键，新增
-				this->list[pos]->addFirst(tag);
+				this->list[pos].addFirst(tag);
 				this->count++;
 				return true;
 			}
@@ -198,24 +201,26 @@ namespace mystl
 		{
 			uint hashCode = Hash::getHashCode(k);
 			int pos = hashCode % this->size;
-			if (this->list[pos]->getCount() == 0)
+			if (this->list[pos].getCount() == 0)
 			{
 				v = nullptr;
 				return false;
 			}
 			else
 			{
-				Iterator* itor = this->list[pos]->getIterator();
+				Iterator* itor = this->list[pos].getIterator();
 				Node* node;
 				while ((node = itor->next()) != nullptr)
 				{
 					if (node->key == k)
 					{
 						*v = node->value;
+						delete itor;
 						return true;
 					}
 				}
 				v = nullptr;
+				delete itor;
 				return false;
 			}
 		}
@@ -225,21 +230,23 @@ namespace mystl
 		{
 			uint hashCode = Hash::getHashCode(key);
 			int pos = hashCode % this->size;
-			if (this->list[pos]->getCount() == 0)
+			if (this->list[pos].getCount() == 0)
 			{
 				return false;
 			}
 			else
 			{
-				Iterator* itor = this->list[pos]->getIterator();
+				Iterator* itor = this->list[pos].getIterator();
 				Node* node;
 				while ((node = itor->next()) != nullptr)
 				{
 					if (node->key == key)
 					{
+						delete itor;
 						return true;
 					}
 				}
+				delete itor;
 				return false;
 			}
 		}
@@ -251,25 +258,27 @@ namespace mystl
 		{
 			uint hashCode = Hash::getHashCode(k);
 			int pos = hashCode % this->size;
-			if (this->list[pos]->getCount() == 0)
+			if (this->list[pos].getCount() == 0)
 			{
 				return false;
 			}
 			else
 			{
-				Iterator* itor = this->list[pos]->getIterator();
+				Iterator* itor = this->list[pos].getIterator();
 				Node* node;
 				int i = 0;
 				while ((node = itor->next()) != nullptr)
 				{
 					if (node->key == k)
 					{
-						this->list[pos]->remove(i);
+						this->list[pos].remove(i);
 						this->count--;
+						delete itor;
 						return true;
 					}
 					i++;
 				}
+				delete itor;
 				return false;
 			}
 		}
@@ -279,7 +288,7 @@ namespace mystl
 		{
 			for (int i = 0; i < this->size; i++)
 			{
-				this->list[i]->clear();
+				this->list[i].clear();
 			}
 			this->count = 0;
 		}
@@ -294,6 +303,19 @@ namespace mystl
 		int getSize()
 		{
 			return this->size;
+		}
+
+		//返回实例副本
+		void* clone()
+		{
+			Map<key, value>* map = new Map<key, value>(this->size);
+			map->size = this->size;
+			map->count = this->count;
+			for (int i = 0; i < map->size; i++)
+			{
+				map->list[i] = *(LinkedList<Node>*)this->list[i].clone();
+			}
+			return map;
 		}
 	};
 

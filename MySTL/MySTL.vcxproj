@@ -147,6 +147,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Cloneable.h" />
     <ClInclude Include="Iterable.h" />
     <ClInclude Include="Iterator.h" />
     <ClInclude Include="Kits.h" />

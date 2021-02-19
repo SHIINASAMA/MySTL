@@ -112,5 +112,14 @@ namespace mystl
 		{
 			return __super::count;
 		}
+
+		//返回实例副本
+		Queue<type>* clone()
+		{
+			Queue<type>* queue = (Queue<type>*) __super::clone();
+			queue->hasLimit = this->hasLimit;
+			queue->limit = this->limit;
+			return queue;
+		}
 	};
 }

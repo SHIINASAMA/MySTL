@@ -57,11 +57,12 @@ namespace mystl
 		}
 
 		//Éú³É¹þ·òÂüÊ÷
-		Node create(Stack* stack)
+		Node __create(Stack* stack)
 		{
 			Node* node1 = new Node;
 			Node* node2 = new Node;
 			Node* node3 = new Node;
+			sort(stack);
 			stack->pop(node1);
 			stack->pop(node2);
 
@@ -72,8 +73,7 @@ namespace mystl
 			stack->push(*node3);
 			if (stack->getCount() != 1)
 			{
-				sort(stack);
-				create(stack);
+				__create(stack);
 			}
 			else
 			{
@@ -107,18 +107,9 @@ namespace mystl
 			clear(&this->root);
 		}
 
-		//¹¹½¨¹þ·òÂüÊ÷
-		void create(Node nodes[], int count)
+		void create(Stack* stack)
 		{
-			::sort(nodes, count, SortMode::DESC);
-			Stack* stack = new Stack;
-			for (int i = 0; i < count; i++)
-			{
-				stack->push(nodes[i]);
-			}
-
-			this->root = create(stack);
-			delete stack;
+			root = create(stack);
 		}
 	};
 
@@ -126,5 +117,15 @@ namespace mystl
 	template<typename type>
 	class Huffman
 	{
+		using Node = HuffmanTreeNode<type>;
+		using Stack = Stack<Node>;
+	public:
+		void Encoding()
+		{
+		}
+
+		void Decoding()
+		{
+		}
 	};
 };

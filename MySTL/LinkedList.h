@@ -1,5 +1,6 @@
 #pragma once
 #include "Iterator.h"
+#include "Cloneable.h"
 
 namespace mystl
 {
@@ -26,7 +27,7 @@ namespace mystl
 
 	//存储和管理链表
 	template<typename type>
-	class LinkedList
+	class LinkedList : public Cloneable
 	{
 	protected:
 		using Node = LinkedListNode<type>;
@@ -217,6 +218,20 @@ namespace mystl
 		Iterator<type>* getIterator()
 		{
 			return new Iterator(root);
+		}
+
+		//返回实例副本
+		void* clone()
+		{
+			LinkedList<type>* list = new  LinkedList<type>;
+			Iterator<type>* itor = this->getIterator();
+			type* v;
+			while ((v = itor->next()) != nullptr)
+			{
+				list->addLast(*v);
+			}
+			delete itor;
+			return list;
 		}
 	};
 };

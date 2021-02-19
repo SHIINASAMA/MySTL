@@ -2,8 +2,6 @@
 
 [toc]
 
-
-
 ---
 
 ## 开发环境
@@ -17,7 +15,7 @@
 
 ### 类
 
-#### *LinkedList&lt;type&gt; - 单向链表*
+#### *LinkedList&lt;type&gt;  : Cloneable- 单向链表*
 
 | 原型                                        | 注释                                       |
 | ------------------------------------------- | ------------------------------------------ |
@@ -32,6 +30,7 @@
 | **void** clear();                           | 清空链表                                   |
 | **int** getCount();                         | 获取链表元素个数                           |
 | **Iterator&lt;type&gt;*** getIterator();    | 获取迭代器                                 |
+| **void*** clone();                          | 返回实例副本                               |
 
 ------
 
@@ -57,10 +56,11 @@
 | **bool** remove();                | 直接删除队列第一个元素，如果队列为空则返回false              |
 | **void** clear();                 | 清空队列                                                     |
 | **int** getCount();               | 获取队列内元素个数                                           |
+| **Queue&lt;type&gt;*** clone()    | 返回实例副本                                                 |
 
 ------
 
-#### *Stack : LinkedList&lt;type&gt; - 堆栈*
+#### *Stack : LinkedList&lt;type&gt; - 堆栈*
 
 | 原型                           | 注释                                       |
 | ------------------------------ | ------------------------------------------ |
@@ -71,6 +71,7 @@
 | **void** push(**type** data);  | 将元素压入堆栈                             |
 | **void** clear();              | 清除堆栈元素                               |
 | **int** getCount();            | 获取堆栈中元素个数                         |
+| **Stack&lt;type&gt;*** clone() | 返回实例副本                               |
 
 -----
 
@@ -119,6 +120,13 @@
 
 #### *HuffmanTreeNode&lt;type&gt; - 哈夫曼树节点*
 
+| 原型                                                         | 注释                         |
+| ------------------------------------------------------------ | ---------------------------- |
+| **bool** operator>=(const **HuffmanTreeNode&lt;type&gt;&** node); | 比较节点中权重大小，用于排序 |
+| **bool** operator<=(const **HuffmanTreeNode&lt;type&gt;&** node); | 比较节点中权重大小，用于排序 |
+
+
+
 -----
 
 #### *HuffmanTree&lt;type&gt; - 哈夫曼树*
@@ -137,6 +145,39 @@
 | -------------------------------------- | --------------------------------------------------------- |
 | *virtual* **Iterable*** getNext() = 0; | 获取指向下一个节点的迭代器，若不存在下一节点则返回nullptr |
 | *virtual* **value*** getValue() = 0;   | 获取指向当前节点数据的指针                                |
+
+-----
+
+#### *Cloneable - 可拷贝接口*
+
+| 原型                             | 注释           |
+| -------------------------------- | -------------- |
+| *virtual* **void*** clone() = 0; | 返回实例的副本 |
+
+-----
+
+### 杂项
+
+#### 函数
+
+| 原型                                                         | 注释                                                         |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| *extern* void swab(**type*** A, **type*** B)；               | 交换两个指针所指向的值                                       |
+| *extern* int compare(**type** A, **type** B);                | 比较两个对象大小：<br />返回值为0表示相等，<br />返回值为正数表示前者更大，<br />返回值为负数则反之 |
+| *extern* void ascSort(**type** nums[], **int** left, **int** right); | 对数组进行正序排序**（请使用sort函数）**                     |
+| *extern* void descSort(**type** nums[], **int** left, **int** right); | 对数组进行反序排序**（请使用sort函数）**                     |
+| *extern* void sort(**type** objs[], **int** count, **SortMode** mode); | 选择模式对数组进行排序                                       |
+
+#### 结构
+
+#### *enum class SortMode* - 排序模式
+
+| 值   | 注释     |
+| ---- | -------- |
+| ASC  | 正序排序 |
+| DESC | 反序排序 |
+
+
 
 -----
 

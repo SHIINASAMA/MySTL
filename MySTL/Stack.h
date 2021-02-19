@@ -65,5 +65,11 @@ namespace mystl
 		{
 			return __super::count;
 		}
+
+		//返回实例副本
+		Stack<type>* clone()
+		{
+			return (Stack<type>*) __super::clone();
+		}
 	};
 };

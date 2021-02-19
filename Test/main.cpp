@@ -1,11 +1,12 @@
 #include "../MySTL/Huffman.h"
+#include "../MySTL/Map.h"
 #include <stdio.h>
 
 using namespace mystl;
 
 int main()
 {
-	HuffmanTreeNode<int> node[8];
+	/*HuffmanTreeNode<int> node[8];
 	node[0].weight = 19;
 	node[1].weight = 21;
 	node[2].weight = 2;
@@ -14,14 +15,20 @@ int main()
 	node[5].weight = 7;
 	node[6].weight = 10;
 	node[7].weight = 32;
-	HuffmanTree<int>* tree = new HuffmanTree<int>;
 
 	Stack<HuffmanTreeNode<int>>* stack = new Stack< HuffmanTreeNode<int>>;
 	for (int i = 0; i < 8; i++)
 	{
 		stack->push(node[i]);
-	}
+	}*/
 
-	tree->create(node, 8);
+	Map<int, int>* map1 = new Map<int, int>;
+	map1->put(1, 1);
+	Map<int, int>* map2 = (Map<int, int>*)map1->clone();
+	map2->put(2, 2);
+
+	int i = 0;
+	map1->get(2, &i);
+
 	return 0;
 }
