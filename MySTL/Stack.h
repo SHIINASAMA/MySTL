@@ -69,7 +69,15 @@ namespace mystl
 		//返回实例副本
 		void* clone()
 		{
-			return __super::clone();
+			Stack<type>* stack = new Stack<type>;
+			Iterator<type>* itor = this->getIterator();
+			type* v;
+			while ((v = itor->next()) != nullptr)
+			{
+				stack->addLast(*v);
+			}
+			delete itor;
+			return stack;
 		}
 	};
 };

@@ -104,7 +104,7 @@ namespace mystl
 		//清空队列
 		void clear()
 		{
-			LinkedList<type>::clear();
+			__super::clear();
 		}
 
 		//返回队列内元素个数
@@ -116,7 +116,14 @@ namespace mystl
 		//返回实例副本
 		void* clone()
 		{
-			Queue<type>* queue = (Queue<type>*) __super::clone();
+			Queue<type>* queue = new Queue<type>;
+			Iterator<type>* itor = __super::getIterator();
+			type* v;
+			while ((v = itor->next()) != nullptr)
+			{
+				queue->addLast(*v);
+			}
+			delete itor;
 			queue->hasLimit = this->hasLimit;
 			queue->limit = this->limit;
 			return queue;

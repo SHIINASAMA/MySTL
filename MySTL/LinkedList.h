@@ -33,8 +33,8 @@ namespace mystl
 		using Node = LinkedListNode<type>;
 
 		Node* root = new Node;
-		//只有add、remove和clear方法会影响到倒数第二个节点
-		Node* penultimate = root;
+		//只有add、remove和clear方法会影响到最后一个节点
+		Node* last = root;
 		int count = 0;
 
 	public:
@@ -68,18 +68,16 @@ namespace mystl
 
 				if (prepos->next != nullptr)
 				{
+					//不是当前的最后一个节点
 					Node* tail = prepos->next;
 					tag->next = tail;
 					prepos->next = tag;
-					if (index == count - 1)
-					{
-						penultimate = prepos->next;
-					}
 				}
 				else
 				{
+					//当前的最后一个节点
 					prepos->next = tag;
-					penultimate = prepos;
+					last = tag;
 				}
 
 				count++;
@@ -97,11 +95,8 @@ namespace mystl
 		{
 			Node* tag = new Node;
 			tag->data = data;
-			if (count != 0)
-			{
-				penultimate = penultimate->next;
-			}
-			penultimate->next = tag;
+			last->next = tag;
+			last = tag;
 			count++;
 		}
 
@@ -150,31 +145,27 @@ namespace mystl
 			//确保删除区间正确
 			if (count > index && index >= 0)
 			{
-				Node* preprepos = root;
 				//将删除的点的前一个点
 				Node* prepos = root;
 				//将要删除的点
 				Node* tofree = nullptr;
 				for (int i = 0; i < index; i++)
 				{
-					preprepos = prepos;
 					prepos = prepos->next;
 				}
 
 				tofree = prepos->next;
-				if (prepos->next->next != nullptr)
+				if (tofree->next != nullptr)
 				{
-					Node* tail = prepos->next->next;
+					//删除的不是最后一个节点
+					Node* tail = tofree->next;
 					prepos->next = tail;
-					if (tail->next == nullptr)
-					{
-						penultimate = prepos;
-					}
 				}
 				else
 				{
+					//删除的是最后一个节点
 					prepos->next = nullptr;
-					penultimate = preprepos;
+					last = prepos;
 				}
 
 				delete tofree;
@@ -192,18 +183,18 @@ namespace mystl
 		{
 			if (0 != count)
 			{
-				Node* pos = root->next;
-				Node* next;
+				Node* tofree = root->next;
+				Node* next = nullptr;
 
-				for (int i = 0; i < count; i++)
+				do
 				{
-					next = pos->next;
-					delete pos;
-					pos = next;
-				}
+					next = tofree->next;
+					delete tofree;
+					tofree = next;
+				} while (next != nullptr);
 
 				root->next = nullptr;
-				penultimate = root;
+				last = root;
 				count = 0;
 			}
 		}

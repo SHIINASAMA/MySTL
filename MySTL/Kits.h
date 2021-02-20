@@ -95,9 +95,9 @@ namespace mystl
 	enum class SortMode
 	{
 		//正序
-		ASC,
+		ASC = 0,
 		//反序
-		DESC
+		DESC = 1
 	};
 
 	//快速排序
@@ -113,7 +113,7 @@ namespace mystl
 	//二进制枚举
 	enum class Code
 	{
-		Zero = '0',
-		One = '1'
+		Zero = 0,
+		One = 1
 	};
 };

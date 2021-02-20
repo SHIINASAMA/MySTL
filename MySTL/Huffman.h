@@ -36,7 +36,8 @@ namespace mystl
 	protected:
 		using Node = HuffmanTreeNode<type>;
 		using Stack = Stack<Node>;
-		Node* root;
+
+		Node* root = nullptr;
 
 		//堆栈排序
 		void sort(Stack* stack)
@@ -59,7 +60,7 @@ namespace mystl
 		}
 
 		//生成哈夫曼树
-		Node __create(Stack* stack)
+		Node* __create(Stack* stack)
 		{
 			Node* node1 = new Node;
 			Node* node2 = new Node;
@@ -79,7 +80,7 @@ namespace mystl
 			}
 			else
 			{
-				return *node3;
+				return node3;
 			}
 		}
 
@@ -101,6 +102,7 @@ namespace mystl
 		//构造函数
 		HuffmanTree()
 		{
+			this->root = new Node;
 		}
 
 		//释放资源
@@ -111,7 +113,7 @@ namespace mystl
 
 		Node* create(Stack* stack)
 		{
-			root = create(stack);
+			this->root = __create(stack);
 			return root;
 		}
 	};
@@ -121,7 +123,7 @@ namespace mystl
 	{
 	public:
 		//构造函数
-		Bin() : Queue<Code>::Queue()
+		Bin()
 		{
 		}
 
@@ -161,55 +163,50 @@ namespace mystl
 	{
 		using Node = HuffmanTreeNode<type>;
 		using Tree = HuffmanTree<type>;
-		using Queue = Queue<Node>;
-		using Stack = Stack<Node>;
-		using Map = Map<Node, Bin>;
+		using Map = Map<type, Bin*>;
 
 		//遍历节点拿Code
-		void getCode(Node* node, Queue* queue, Map* map)
+		static void getCode(Node* node, LinkedList<Code>* list, Map* map)
 		{
 			if (node->left != nullptr)
 			{
-				Queue* temp = (Queue*)queue->clone();
-				temp->put(Code::One);
-				getCode(node->left, temp, map);
+				list->addLast(Code::Zero);
+				getCode(node->left, list, map);
+				list->remove(list->getCount() - 1);
 			}
 
 			if (node->right != nullptr)
 			{
-				Queue* temp = (Queue*)queue->clone();
-				temp->put(Code::Zero);
-				getCode(node->right, temp, map);
+				list->addLast(Code::One);
+				getCode(node->right, list, map);
+				list->remove(list->getCount() - 1);
 			}
 
-			if (node->left == nullptr && node->left == nullptr)
+			if (node->left == nullptr && node->right == nullptr)
 			{
 				Bin* bin = new Bin;
-				int len = queue->getCount();
-				Code code;
-				for (int i = 0; i < len; i++)
+				Iterator<Code>* itor = list->getIterator();
+				Code* code = nullptr;
+				while ((code = itor->next()) != nullptr)
 				{
-					queue->take(&code);
-					bin->put(code);
+					bin->put(*code);
 				}
-				map->put(node, bin);
+				map->put(node->data, bin);
+				delete itor;
 			}
-
-			delete queue;
 		}
 	public:
 		//根据所给频率表计算哈夫曼编码
-		Map* calculate(Stack* stack)
+		static Map* calculate(Stack<Node>* stack)
 		{
 			Tree* tree = new Tree;
-			Map* map = new Map;
 			Node* root = tree->create(stack);
-			Queue* queue = new Queue;
+			Map* map = new Map;
+			LinkedList<Code>* list = new LinkedList<Code>;
+			getCode(root, list, map);
 
-			getCode(root, queue, map);
-
-			delete queue;
 			delete tree;
+			delete list;
 			return map;
 		}
 	};
