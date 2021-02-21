@@ -186,6 +186,7 @@
 | *extern* void ascSort(**type** nums[], **int** left, **int** right); | 对数组进行正序排序**（请使用sort函数）**                     |
 | *extern* void descSort(**type** nums[], **int** left, **int** right); | 对数组进行反序排序**（请使用sort函数）**                     |
 | *extern* void sort(**type** objs[], **int** count, **SortMode** mode); | 选择模式对数组进行排序                                       |
+| *extern* **type** max(**type** A, **type** B)                | 返回两者之间最大者                                           |
 
 #### 结构
 

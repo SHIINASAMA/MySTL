@@ -116,4 +116,11 @@ namespace mystl
 		Zero = 0,
 		One = 1
 	};
+
+	//返回两者最大值
+	template<typename type>
+	extern type max(type A, type B)
+	{
+		return A >= B ? A : B;
+	}
 };
