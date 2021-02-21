@@ -28,35 +28,29 @@ namespace mystl
 		//左旋
 		Node* leftRotate(Node* node)
 		{
+			Node* left = node->left;
+			Node* right = node->right;
+			node->right = right->left;
+			right->left = node;
+
+			left->height = max<int>(getHeight(left->left, left->right)) + 1;
+			right->height = max<int>(getHeight(right->left, right->right)) + 1;
+
+			return right;
 		}
 
 		//右旋
 		Node* rightRotate(Node* node)
 		{
-		}
+			Node* left = node->left;
+			Node* right = node->right;
+			node->left = left->right;
+			left->right = node;
 
-		//LL
-		//右旋一次
-		void LL(Node* node)
-		{
-		}
+			left->height = max<int>(getHeight(left->left, left->right)) + 1;
+			right->height = max<int>(getHeight(right->left, right->right)) + 1;
 
-		//RR
-		//左旋一次
-		void RR(Node* node)
-		{
-		}
-
-		//LR
-		//先左旋后右旋（不同节点）
-		void LR(Node* node)
-		{
-		}
-
-		//RL
-		//先右旋后左旋（不同节点）
-		void RL(Node* node)
-		{
+			return left;
 		}
 
 		//获取高度
@@ -86,12 +80,70 @@ namespace mystl
 		}
 
 		//再平衡
-		void reBalance(Node* node)
+		Node* reBalance(Node* node)
 		{
+			//根据计算的平衡因子判断当前的纠正模式
+			int factor = getBalanceFactor(node);
+
+			//LL
+			if (factor > 1 && getBalanceFactor(node->left) > 0)
+			{
+				return rightRotate(node);
+			}
+			//LR
+			else if (factor > 1 && getBalanceFactor(node->left) <= 0)
+			{
+				node->left = leftRotate(node->left);
+				return rightRotate(node);
+			}
+			//RR
+			else if (factor < -1 && getBalanceFactor(node->right) <= 0)
+			{
+				return leftRotate(node);
+			}
+			//LR
+			else if (factor < -1 && getBalanceFactor(node->right) > 0)
+			{
+				node->right = rightRotate(node->right);
+				return leftRotate(node);
+			}
+			//无需操作
+			else
+			{
+				return node;
+			}
 		}
 
 		bool insert(Node* node, key k, value v)
 		{
+			//节点为空添加并返回true
+			if (node == nullptr)
+			{
+				Node* tag = new Node;
+				tag->key = k;
+				tag->value = v;
+
+				*node = tag;
+			}
+			//节点不为空覆盖并返回false
+			else if (node->key == k)
+			{
+				node->value = v;
+				return false;
+			}
+			else
+			{
+				if (node->value < v)
+				{
+					return insert(node->right, k, v);
+				}
+				else
+				{
+					return insert(node->left, k, v);
+				}
+			}
+
+			reBalance(node);
 		}
 
 		bool remove(Node* node, key k)
@@ -104,15 +156,6 @@ namespace mystl
 		//键不存在时新建节点并返回true
 		bool put(key k, value v)
 		{
-			if (this->count == 0)
-			{
-				this->root = new Node{ k,v };
-				this->count++;
-				return true;
-			}
-			else
-			{
-			}
 		}
 
 		//根据键查询值
