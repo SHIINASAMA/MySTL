@@ -31,7 +31,7 @@ namespace mystl
 				return false;
 			}
 			__super::get(0, data);
-			__super::remove(0);
+			__super::__remove(0);
 			return true;
 		}
 
@@ -44,13 +44,13 @@ namespace mystl
 		//直接删除堆栈顶部元素
 		//成功返回true
 		//失败返回false
-		bool remove()
+		bool __remove()
 		{
 			if (__super::count == 0)
 			{
 				return false;
 			}
-			__super::remove(0);
+			__super::__remove(0);
 			return true;
 		}
 

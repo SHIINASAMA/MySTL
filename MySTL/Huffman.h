@@ -172,14 +172,14 @@ namespace mystl
 			{
 				list->addLast(Code::Zero);
 				getCode(node->left, list, map);
-				list->remove(list->getCount() - 1);
+				list->__remove(list->getCount() - 1);
 			}
 
 			if (node->right != nullptr)
 			{
 				list->addLast(Code::One);
 				getCode(node->right, list, map);
-				list->remove(list->getCount() - 1);
+				list->__remove(list->getCount() - 1);
 			}
 
 			if (node->left == nullptr && node->right == nullptr)

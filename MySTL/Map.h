@@ -254,7 +254,7 @@ namespace mystl
 		//根据键删除键值对
 		//若键存在返回true
 		//否则返回false
-		bool remove(key k)
+		bool __remove(key k)
 		{
 			uint hashCode = Hash::getHashCode(k);
 			int pos = hashCode % this->size;
@@ -271,7 +271,7 @@ namespace mystl
 				{
 					if (node->key == k)
 					{
-						this->list[pos].remove(i);
+						this->list[pos].__remove(i);
 						this->count--;
 						delete itor;
 						return true;

@@ -140,7 +140,7 @@ namespace mystl
 
 		//删除指定位置的元素
 		//获取成功返回true，失败则返回false
-		bool remove(int index)
+		bool __remove(int index)
 		{
 			//确保删除区间正确
 			if (count > index && index >= 0)

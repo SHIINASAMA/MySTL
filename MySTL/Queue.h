@@ -84,20 +84,20 @@ namespace mystl
 				return false;
 			}
 			__super::get(0, data);
-			__super::remove(0);
+			__super::__remove(0);
 			return true;
 		}
 
 		//直接删除队列的第一个元素
 		//如果队列为空则返回false，
 		//成功返回true
-		bool remove()
+		bool __remove()
 		{
 			if (__super::count == 0)
 			{
 				return false;
 			}
-			__super::remove(0);
+			__super::__remove(0);
 			return true;
 		}
 
