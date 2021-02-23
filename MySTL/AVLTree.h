@@ -26,56 +26,112 @@ namespace mystl
 		int count = 0;
 		Node* root = nullptr;
 
-		//右旋
+		//右旋 - 自己变左孩子的右孩子
 		Node* LL(Node* node)
 		{
 			Node* left = node->left;
-
-			node->left = left->right;
-			left->right = nullptr;
-			if (node->left != nullptr)
+			//判断是否存在左孩子的右孩子
+			if (left->right != nullptr)
 			{
+				//存在则接到根节点的左孩子
+				node->left = left->right;
 				node->left->parent = node;
+			}
+			else
+			{
+				//不存在直接设置nullptr
+				node->left = nullptr;
+			}
+
+			//判断根节点是否有父节点
+			Node* parent = node->parent;
+			if (parent != nullptr)
+			{
+				//存在则新根节点要继承原根节点的父亲
+				left->parent = parent;
+
+				//新根节点是父亲的左节点
+				if (parent->key > left->key)
+				{
+					parent->left = left;
+				}
+				//新根节点是父亲的右节点
+				else
+				{
+					parent->right = left;
+				}
+			}
+			else
+			{
+				//不存在直接设置nullptr
+				left->parent = nullptr;
 			}
 
 			left->right = node;
-			left->parent = node->parent;
 			node->parent = left;
 
 			return left;
 		}
 
-		//左旋
+		//左旋 - 自己变右孩子的左孩子
 		Node* RR(Node* node)
 		{
 			Node* right = node->right;
-
-			node->right = right->left;
-			right->left = nullptr;
-			if (node->right != nullptr)
+			//判断是否存在右孩子的左孩子
+			if (right->left != nullptr)
 			{
+				//存在则接到根节点的右孩子
+				node->right = right->left;
 				node->right->parent = node;
+			}
+			else
+			{
+				//不存在直接设置nullptr
+				node->right = nullptr;
+			}
+
+			//判断根节点是否有父节点
+			Node* parent = node->parent;
+			if (parent != nullptr)
+			{
+				//存在则新节点要继承原根节点的父亲
+				right->parent = parent;
+
+				//新节点是父亲的左节点
+				if (parent->key > right->key)
+				{
+					parent->left = right;
+				}
+				//新节点是父亲的右节点
+				else
+				{
+					parent->right = right;
+				}
+			}
+			else
+			{
+				//不存在直接设置nullptr
+				right->parent = nullptr;
 			}
 
 			right->left = node;
-			right->parent = node->parent;
 			node->parent = right;
 
 			return right;
 		}
 
-		//先右旋后左旋
-		Node* RL(Node* node)
-		{
-			LL(node->right);
-			return RR(node);
-		}
-
 		//先左旋后右旋
-		Node* LR(Node* node)
+		Node* RL(Node* node)
 		{
 			RR(node->left);
 			return LL(node);
+		}
+
+		//先右旋后左旋
+		Node* LR(Node* node)
+		{
+			LL(node->right);
+			return RR(node);
 		}
 
 		//获取节点高度
@@ -134,6 +190,7 @@ namespace mystl
 			{
 				pp->right = tag;
 			}
+			balance(tag);
 			return true;
 		}
 
@@ -308,8 +365,51 @@ namespace mystl
 			return true;
 		}
 
+		int getBalanceFactor(Node* node)
+		{
+			if (node == nullptr)
+			{
+				return 0;
+			}
+			else
+			{
+				return getHeight(0, node->left) - getHeight(0, node->right);
+			}
+		}
+
 		void balance(Node* node)
 		{
+			if (node != nullptr)
+			{
+				int factor = getBalanceFactor(node);
+				if (factor > 1 && getBalanceFactor(node->left) > 0)//LL --
+				{
+					node = LL(node);
+				}
+				else if (factor > 1 && getBalanceFactor(node->left) <= 0)//RL --
+				{
+					node = RL(node);
+				}
+				else if (factor < -1 && getBalanceFactor(node->right) <= 0)//RR --
+				{
+					node = RR(node);
+				}
+				else if (factor < -1 && getBalanceFactor(node->right) > 0)//LR --
+				{
+					node = LR(node);
+				}
+
+				if (node->parent == nullptr)
+				{
+					this->root = node;
+				}
+
+				balance(node->parent);
+			}
+			else
+			{
+				return;
+			}
 		}
 
 	public:
