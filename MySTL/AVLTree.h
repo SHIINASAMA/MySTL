@@ -11,6 +11,7 @@ namespace mystl
 	public:
 		key key{ 0 };
 		value value{ 0 };
+		Node* parent = nullptr;
 		Node* left = nullptr;
 		Node* right = nullptr;
 	};
@@ -19,7 +20,7 @@ namespace mystl
 	template<typename key, typename value>
 	class AVLTree
 	{
-		//protected:
+	protected:
 	public:
 		using Node = AVLTreeNode<key, value>;
 		int count = 0;
@@ -29,8 +30,17 @@ namespace mystl
 		Node* LL(Node* node)
 		{
 			Node* left = node->left;
+
 			node->left = left->right;
+			left->right = nullptr;
+			if (node->left != nullptr)
+			{
+				node->left->parent = node;
+			}
+
 			left->right = node;
+			left->parent = node->parent;
+			node->parent = left;
 
 			return left;
 		}
@@ -39,8 +49,17 @@ namespace mystl
 		Node* RR(Node* node)
 		{
 			Node* right = node->right;
+
 			node->right = right->left;
+			right->left = nullptr;
+			if (node->right != nullptr)
+			{
+				node->right->parent = node;
+			}
+
 			right->left = node;
+			right->parent = node->parent;
+			node->parent = right;
 
 			return right;
 		}
@@ -106,6 +125,7 @@ namespace mystl
 			}
 
 			Node* tag = new Node{ k,v };
+			tag->parent = pp;
 			if (pp->key > k)
 			{
 				pp->left = tag;
