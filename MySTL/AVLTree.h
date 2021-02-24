@@ -1,5 +1,6 @@
 #pragma once
 #include "Kits.h"
+#include "Cloneable.h"
 
 namespace mystl
 {
@@ -18,10 +19,9 @@ namespace mystl
 
 	//AVL树
 	template<typename key, typename value>
-	class AVLTree
+	class AVLTree : Cloneable
 	{
 	protected:
-	public:
 		using Node = AVLTreeNode<key, value>;
 		int count = 0;
 		Node* root = nullptr;
@@ -365,6 +365,84 @@ namespace mystl
 			return true;
 		}
 
+		bool __get(Node* node, key k, value* v)
+		{
+			if (node->key < k)
+			{
+				return __get(node->right, k, v);
+			}
+			else if (node->key > k)
+			{
+				return __get(node->left, k, v);
+			}
+			else
+			{
+				*v = node->value;
+				return true;
+			}
+			return false;
+		}
+
+		void __clear(Node* node)
+		{
+			if (node == nullptr)
+			{
+				return;
+			}
+
+			if (node->left != nullptr)
+			{
+				__clear(node->left);
+			}
+
+			if (node->right != nullptr)
+			{
+				__clear(node->right);
+			}
+
+			delete node;
+		}
+
+		Node* __clone(Node* src, Node* obj, Node* pre)
+		{
+			if (src == nullptr)
+			{
+				return nullptr;
+			}
+			else
+			{
+				Node* tag = new Node;
+				tag->key = src->key;
+				tag->value = src->value;
+				if (pre != nullptr)
+				{
+					tag->parent = pre;
+					if (pre->key > tag->key)
+					{
+						pre->left = tag;
+					}
+					else
+					{
+						pre->right = tag;
+					}
+				}
+				obj = tag;
+
+				if (src->left != nullptr)
+				{
+					__clone(src->left, obj->left, obj);
+				}
+
+				if (src->right != nullptr)
+				{
+					__clone(src->right, obj->right, obj);
+				}
+
+				return obj;
+			}
+		}
+
+		//获取平衡因子
 		int getBalanceFactor(Node* node)
 		{
 			if (node == nullptr)
@@ -413,12 +491,24 @@ namespace mystl
 		}
 
 	public:
+		AVLTree()
+		{
+		}
+
 		//添加键值对
 		//键已存在时覆盖并返回true
 		//键不存在时返回false
 		bool put(key k, value v)
 		{
-			return __insert(k, v);
+			if (__insert(k, v))
+			{
+				this->count++;
+				return true;
+			}
+			else
+			{
+				return false;
+			}
 		}
 
 		//根据键查询值
@@ -426,6 +516,7 @@ namespace mystl
 		//键不存在反之
 		bool get(key k, value* v)
 		{
+			__get(this->root, k, v);
 		}
 
 		//根据键删除键值对
@@ -433,7 +524,38 @@ namespace mystl
 		//键不存在反之
 		bool remove(key k)
 		{
-			return __remove(k);
+			if (__remove(k))
+			{
+				this->count--;
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+
+		//清除所有键值对
+		void clear()
+		{
+			__clear(this->root);
+			this->root = nullptr;
+			this->count = 0;
+		}
+
+		//获取元素个数
+		int getCount()
+		{
+			return this->count;
+		}
+
+		//获取实例副本
+		void* clone()
+		{
+			AVLTree<key, value>* tree = new AVLTree<key, value>;
+			tree->root = __clone(this->root, tree->root, nullptr);
+			tree->count = this->count;
+			return tree;
 		}
 	};
 };
